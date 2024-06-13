@@ -71,7 +71,7 @@ while True:
         snake[0] in snake[1:]:
         # End the window
         curses.endwin()
-        print("Game Over! Your score was: {}".format(score))  # Print the score
+        print(" Well done! {} your score was: {}".format(name, score))  # Print the score with player's name
         quit()
 
     # Calculate the new head of the snake
@@ -107,5 +107,11 @@ while True:
         tail = snake.pop()
         w.addch(int(tail[0]), int(tail[1]), ' ')
 
-    # Add the new head of the snake to the screen
-    w.addch(int(snake[0][0]), int(snake[0][1]), curses.ACS_CKBOARD)
+     # Add the new head of the snake to the screen
+    if 0 <= int(snake[0][0]) < sh and 0 <= int(snake[0][1]) < sw:
+        w.addch(int(snake[0][0]), int(snake[0][1]), curses.ACS_CKBOARD)
+    else:
+        # End the window
+        curses.endwin()
+        print("{} your score was: {}".format(name, score))  # Print the score with player's name
+        quit()
