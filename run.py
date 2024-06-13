@@ -56,6 +56,7 @@ w.addch(int(food[0]), int(food[1]), curses.ACS_PI)
 
 # Initialize the game state
 key = curses.KEY_RIGHT
+score = 0  # Add a score variable
 
 # Game loop
 while True:
@@ -70,6 +71,7 @@ while True:
         snake[0] in snake[1:]:
         # End the window
         curses.endwin()
+        print("Game Over! Your score was: {}".format(score))  # Print the score
         quit()
 
     # Calculate the new head of the snake
@@ -90,6 +92,7 @@ while True:
 
     # Check if snake has eaten the food
     if snake[0] == food:
+        score += 1  # Increase the score
         food = None
         while food is None:
             nf = [
