@@ -1,3 +1,81 @@
-# Your code goes here.
-# You can delete these comments, but do not change the name of this file
-# Write your code to expect a terminal of 80 characters wide and 24 rows high
+import random
+import curses
+
+# Initialize the screen
+s = curses.initscr()
+# Set the cursor to 0 (invisible)
+curses.curs_set(0)
+# Get the height and width of the screen
+sh, sw = s.getmaxyx()
+# Create a new window using screen height and width
+w = curses.newwin(sh, sw, 0, 0)
+# Accept keypad input
+w.keypad(1)
+# Refresh the screen every 100 milliseconds
+w.timeout(100)
+
+# Create the snake
+snk_x = sw//4
+snk_y = sh//2
+snake = [
+    [snk_y, snk_x],
+    [snk_y, snk_x-1],
+    [snk_y, snk_x-2]
+]
+
+# Create the food
+food = [sh//2, sw//2]
+w.addch(int(food[0]), int(food[1]), curses.ACS_PI)
+
+# Initialize the game state
+key = curses.KEY_RIGHT
+
+# Game loop
+while True:
+    # Get the next key
+    next_key = w.getch()
+    # If no key is pressed, then use the current key
+    key = key if next_key == -1 else next_key
+
+    # Check if game over
+    if snake[0][0] in [0, sh] or \
+        snake[0][1]  in [0, sw] or \
+        snake[0] in snake[1:]:
+        # End the window
+        curses.endwin()
+        quit()
+
+    # Calculate the new head of the snake
+    new_head = [snake[0][0], snake[0][1]]
+
+    # Move the snake
+    if key == curses.KEY_DOWN:
+        new_head[0] += 1
+    if key == curses.KEY_UP:
+        new_head[0] -= 1
+    if key == curses.KEY_LEFT:
+        new_head[1] -= 1
+    if key == curses.KEY_RIGHT:
+        new_head[1] += 1
+
+    # Insert the new head of the snake
+    snake.insert(0, new_head)
+
+    # Check if snake has eaten the food
+    if snake[0] == food:
+        food = None
+        while food is None:
+            nf = [
+                random.randint(1, sh-1),
+                random.randint(1, sw-1)
+            ]
+            # If the new food position is not part of the snake, place the food there
+            food = nf if nf not in snake else None
+        w.addch(food[0], food[1], curses.ACS_PI)
+    else:
+        # Remove the tail of the snake
+        tail = snake.pop()
+        w.addch(int(tail[0]), int(tail[1]), ' ')
+
+    # Add the new head of the snake to the screen
+    w.addch(int(snake[0][0]), int(snake[0][1]), curses.ACS_CKBOARD)
