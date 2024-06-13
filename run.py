@@ -4,6 +4,11 @@ import curses
 # Initialize the screen
 s = curses.initscr()
 # Set the cursor to 0 (invisible)
+try:
+    curses.curs_set(0)
+except curses.error:
+    pass
+# Set the cursor to 0 (invisible)
 curses.curs_set(0)
 # Get the height and width of the screen
 sh, sw = s.getmaxyx()
