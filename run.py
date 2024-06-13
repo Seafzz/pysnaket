@@ -8,16 +8,32 @@ try:
     curses.curs_set(0)
 except curses.error:
     pass
-# Set the cursor to 0 (invisible)
-curses.curs_set(0)
+
 # Get the height and width of the screen
 sh, sw = s.getmaxyx()
-# Create a new window using screen height and width
+
+# Ask for the player's name
+s.addstr(sh//2, sw//2, "What's your name?")
+s.refresh()
+curses.echo()
+name = s.getstr().decode('utf-8')
+
+# Ask if the player wants to start the game
+s.clear()
+s.addstr(sh//2, sw//2, "Do you want to start the game, {}? (Y/N)".format(name))
+s.refresh()
+start_game = s.getch()
+
+# If the player doesn't want to start the game, then exit
+if start_game not in [ord('y'), ord('Y')]:
+    curses.endwin()
+    quit()
+
+# Turn off echo
+curses.noecho()
+
+# Create a new window for the game
 w = curses.newwin(sh, sw, 0, 0)
-# Accept keypad input
-w.keypad(1)
-# Refresh the screen every 100 milliseconds
-w.timeout(100)
 
 # Create the snake
 snk_x = sw//4
