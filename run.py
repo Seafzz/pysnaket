@@ -35,6 +35,12 @@ curses.noecho()
 # Create a new window for the game
 w = curses.newwin(sh, sw, 0, 0)
 
+# Enable keypad for the new window
+w.keypad(1)
+
+# Set the timeout for the window
+w.timeout(100)  # The window will wait 100ms for a key press
+
 # Create the snake
 snk_x = sw//4
 snk_y = sh//2
