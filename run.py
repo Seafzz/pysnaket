@@ -16,7 +16,10 @@ while True:
 # If the player has played before, skip the instructions
 if played_before == 'no':
     while True:
-        controll_the_snake = input("Use the arrow keys to control the snake. Do not let the snake reach the border of the window or eat itself! Press 'Enter' to continue. ")
+        controll_the_snake = input("Use the arrow keys to control the snake.\
+        you can hold the arrow down for the snake to go faster.\
+        Do not let the snake reach the border of the window or eat itself!\
+        Press 'Enter' to continue. ")
         if controll_the_snake == '':
             break
         else:
@@ -109,6 +112,7 @@ while True:
 
         # Check if snake has eaten the food
         if snake[0] == food:
+            score += 1  # Increase the score
             food = None
             while food is None:
                 nf = [
